@@ -20,27 +20,20 @@ int main(int argc, char const *argv[]) {
         char * file = "./temp";
         mkfifo(file, 0666);
 
-        int child = fork(), status;
-
-        if(child == 0){
-            char * args[3];
-            args[0] = "./helper";
-            args[1] = "./helper";
-            args[2] = NULL;
-
-
-            execvp(args[0], args);
-        }
-        int fd = open(file, O_RDWR);
+        int fd = open(file, O_WRONLY);
         write(fd, buffer, sizeof(buffer));
 
-        wait(&status);
+        close(fd);
+
+        char * file2 = "./temp2";
+        int fd2 = open(file2, O_RDONLY);
 
         char out[1024];
         read(fd, out, sizeof(out));
 
         printf("Shuffled Output: %s\n", out);
-        close(fd);
+
+        close(fd2);
 
     }
 
