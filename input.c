@@ -26,10 +26,11 @@ int main(int argc, char const *argv[]) {
         close(fd);
 
         char * file2 = "./temp2";
+        mkfifo(file2, 0666);
         int fd2 = open(file2, O_RDONLY);
 
         char out[1024];
-        read(fd, out, sizeof(out));
+        read(fd2, out, sizeof(out));
 
         printf("Shuffled Output: %s\n", out);
 
